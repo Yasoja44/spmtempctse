@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudl-client-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+        - name: client
+          image: yasoja44/react-app:v1
+          ports:
+            - containerPort: 3000
+              name: http-port
+  selector:
+    matchLabels:
+      app: client
+      
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloudl-client-service
+spec:
+  ports:
+    - port: 3000
+      protocol: TCP
+      targetPort: http-port
+  selector:
+    app: client
+  type: LoadBalancer
+      
